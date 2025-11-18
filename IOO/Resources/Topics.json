@@ -1,0 +1,230 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "text": "猫",
+    "category": "animal",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000002",
+    "text": "狗",
+    "category": "animal",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000003",
+    "text": "大象",
+    "category": "animal",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000004",
+    "text": "长颈鹿",
+    "category": "animal",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000005",
+    "text": "企鹅",
+    "category": "animal",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000006",
+    "text": "蝴蝶",
+    "category": "animal",
+    "difficulty": "hard"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000007",
+    "text": "兔子",
+    "category": "animal",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000008",
+    "text": "熊猫",
+    "category": "animal",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000101",
+    "text": "苹果",
+    "category": "food",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000102",
+    "text": "西瓜",
+    "category": "food",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000103",
+    "text": "冰淇淋",
+    "category": "food",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000104",
+    "text": "汉堡",
+    "category": "food",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000105",
+    "text": "寿司",
+    "category": "food",
+    "difficulty": "hard"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000106",
+    "text": "蛋糕",
+    "category": "food",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000201",
+    "text": "杯子",
+    "category": "object",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000202",
+    "text": "雨伞",
+    "category": "object",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000203",
+    "text": "眼镜",
+    "category": "object",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000204",
+    "text": "钥匙",
+    "category": "object",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000205",
+    "text": "相机",
+    "category": "object",
+    "difficulty": "hard"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000206",
+    "text": "书本",
+    "category": "object",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000301",
+    "text": "太阳",
+    "category": "nature",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000302",
+    "text": "月亮",
+    "category": "nature",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000303",
+    "text": "星星",
+    "category": "nature",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000304",
+    "text": "彩虹",
+    "category": "nature",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000305",
+    "text": "云朵",
+    "category": "nature",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000306",
+    "text": "闪电",
+    "category": "nature",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000401",
+    "text": "汽车",
+    "category": "transportation",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000402",
+    "text": "自行车",
+    "category": "transportation",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000403",
+    "text": "飞机",
+    "category": "transportation",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000404",
+    "text": "火箭",
+    "category": "transportation",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000405",
+    "text": "船",
+    "category": "transportation",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000501",
+    "text": "房子",
+    "category": "general",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000502",
+    "text": "树",
+    "category": "general",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000503",
+    "text": "花",
+    "category": "general",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000504",
+    "text": "爱心",
+    "category": "general",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000505",
+    "text": "礼物",
+    "category": "general",
+    "difficulty": "medium"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000506",
+    "text": "笑脸",
+    "category": "general",
+    "difficulty": "easy"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000507",
+    "text": "音符",
+    "category": "general",
+    "difficulty": "medium"
+  }
+]
