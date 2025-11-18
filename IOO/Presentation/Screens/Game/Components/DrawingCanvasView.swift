@@ -93,6 +93,9 @@ struct DrawingCanvasView: View {
                 }
         )
         .disabled(!isEnabled)
+        .accessibilityLabel("绘画画布")
+        .accessibilityHint(isEnabled ? "在画布上拖动手指进行绘画" : "画布已禁用")
+        .accessibilityValue(currentStrokes.isEmpty ? "画布为空" : "已有 \(currentStrokes.count) 个笔触")
     }
 
     // MARK: - Toolbar
@@ -118,11 +121,14 @@ struct DrawingCanvasView: View {
                     Label("清空", systemImage: "trash")
                         .font(.subheadline)
                         .foregroundColor(.red)
+                        .frame(minHeight: AccessibilityConstants.minimumTouchTargetSize)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .background(Color.red.opacity(0.1))
                 .cornerRadius(8)
+                .accessibilityLabel("清空画布")
+                .accessibilityHint("双击清空当前画布上的所有内容")
 
                 Spacer()
 
@@ -133,12 +139,15 @@ struct DrawingCanvasView: View {
                     Label("完成", systemImage: "checkmark")
                         .font(.subheadline)
                         .foregroundColor(.white)
+                        .frame(minHeight: AccessibilityConstants.minimumTouchTargetSize)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .background(currentStrokes.isEmpty ? Color.gray : Color.accentColor)
                 .cornerRadius(8)
                 .disabled(currentStrokes.isEmpty || !isEnabled)
+                .accessibilityLabel("完成绘画")
+                .accessibilityHint(currentStrokes.isEmpty ? "画布为空，无法完成" : "双击完成绘画并提交")
             }
             .padding(.horizontal)
         }
@@ -151,7 +160,8 @@ struct DrawingCanvasView: View {
     private func colorButton(_ color: Color) -> some View {
         Circle()
             .fill(color)
-            .frame(width: 40, height: 40)
+            .frame(width: AccessibilityConstants.minimumTouchTargetSize,
+                   height: AccessibilityConstants.minimumTouchTargetSize)
             .overlay(
                 Circle()
                     .stroke(Color.white, lineWidth: 3)
@@ -163,11 +173,32 @@ struct DrawingCanvasView: View {
             )
             .onTapGesture {
                 currentColor = color
+                HapticFeedback.colorSelected()
             }
+            .accessibilityLabel(colorName(for: color))
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAddTraits(currentColor == color ? .isSelected : [])
+            .accessibilityHint("双击选择此颜色")
+    }
+
+    /// 获取颜色名称
+    private func colorName(for color: Color) -> String {
+        // 简单的颜色名称映射
+        if color == .black { return "黑色" }
+        if color == .red { return "红色" }
+        if color == .blue { return "蓝色" }
+        if color == .green { return "绿色" }
+        if color == .yellow { return "黄色" }
+        if color == .orange { return "橙色" }
+        if color == .purple { return "紫色" }
+        if color == .pink { return "粉色" }
+        if color == .brown { return "棕色" }
+        return "颜色"
     }
 
     // MARK: - Actions
     private func clearCanvas() {
+        HapticFeedback.canvasCleared()
         withAnimation {
             currentStrokes.removeAll()
         }
@@ -175,6 +206,9 @@ struct DrawingCanvasView: View {
 
     private func finishDrawing() {
         guard !currentStrokes.isEmpty else { return }
+
+        // 触觉反馈
+        HapticFeedback.drawingComplete()
 
         // 将画布渲染为图片
         let renderer = ImageRenderer(content: renderableCanvas)

@@ -52,45 +52,60 @@ struct PairingView: View {
                 Image(systemName: "link.badge.plus")
                     .font(.system(size: 80))
                     .foregroundStyle(.gray)
+                    .transition(.scale.combined(with: .opacity))
                 Text("未连接")
                     .font(.title2)
+                    .transition(.opacity)
 
             case .searching:
                 ProgressView()
                     .scaleEffect(2)
+                    .transition(.scale.combined(with: .opacity))
                 Text("搜索中...")
                     .font(.title3)
+                    .transition(.opacity)
 
             case .connecting:
                 ProgressView()
                     .scaleEffect(2)
+                    .transition(.scale.combined(with: .opacity))
                 Text("连接中...")
                     .font(.title3)
+                    .transition(.opacity)
 
             case .connected:
                 Image(systemName: "link.circle.fill")
                     .font(.system(size: 80))
                     .foregroundStyle(.green)
+                    .transition(.scale.combined(with: .opacity))
+                    .symbolEffect(.bounce, value: viewModel.connectionState)
                 if let partnerName = viewModel.connectedPartnerName {
                     Text("已连接到")
                         .font(.title3)
+                        .transition(.opacity)
                     Text(partnerName)
                         .font(.title2)
                         .fontWeight(.bold)
+                        .transition(.scale.combined(with: .opacity))
                 }
 
             case .error(let message):
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(.system(size: 80))
                     .foregroundStyle(.red)
+                    .transition(.scale.combined(with: .opacity))
+                    .symbolEffect(.pulse, value: viewModel.connectionState)
                 Text("连接失败")
                     .font(.title2)
+                    .transition(.opacity)
                 Text(message)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+                    .transition(.opacity)
             }
         }
+        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: viewModel.connectionState)
     }
 
     @ViewBuilder
@@ -109,6 +124,8 @@ struct PairingView: View {
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .buttonStyle(.plain)
 
                 Button {
                     Task {
@@ -123,6 +140,8 @@ struct PairingView: View {
                         .foregroundColor(.red)
                         .cornerRadius(12)
                 }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .buttonStyle(.plain)
             } else {
                 if viewModel.isSearching {
                     Button {
@@ -138,6 +157,8 @@ struct PairingView: View {
                             .foregroundColor(.primary)
                             .cornerRadius(12)
                     }
+                    .transition(.scale.combined(with: .opacity))
+                    .buttonStyle(.plain)
                 } else {
                     Button {
                         Task {
@@ -152,8 +173,12 @@ struct PairingView: View {
                             .foregroundColor(.white)
                             .cornerRadius(12)
                     }
+                    .transition(.scale.combined(with: .opacity))
+                    .buttonStyle(.plain)
                 }
             }
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.connectionState)
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.isSearching)
     }
 }

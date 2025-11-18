@@ -10,6 +10,7 @@ import SwiftUI
 struct ResultView: View {
     @State private var viewModel: ResultViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var isVisible: Bool = false
 
     init(viewModel: ResultViewModel) {
         self.viewModel = viewModel
@@ -20,20 +21,33 @@ struct ResultView: View {
             VStack(spacing: 24) {
                 // 标题
                 header
+                    .opacity(isVisible ? 1 : 0)
+                    .offset(y: isVisible ? 0 : -20)
 
                 // 题目
                 topicSection
+                    .opacity(isVisible ? 1 : 0)
+                    .offset(y: isVisible ? 0 : -20)
 
                 // 双人绘画对比
                 drawingsComparison
+                    .opacity(isVisible ? 1 : 0)
+                    .offset(y: isVisible ? 0 : -20)
 
                 // 操作按钮
                 actionButtons
+                    .opacity(isVisible ? 1 : 0)
+                    .offset(y: isVisible ? 0 : 20)
             }
             .padding()
         }
         .navigationTitle("游戏结果")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1)) {
+                isVisible = true
+            }
+        }
     }
 
     // MARK: - Header
@@ -43,6 +57,8 @@ struct ResultView: View {
             Image(systemName: "star.fill")
                 .font(.system(size: 60))
                 .foregroundStyle(.yellow)
+                .scaleEffect(isVisible ? 1 : 0.3)
+                .rotationEffect(.degrees(isVisible ? 0 : 180))
 
             Text("完成！")
                 .font(.largeTitle)
@@ -52,6 +68,7 @@ struct ResultView: View {
                 Text("默契度: \(score)%")
                     .font(.title3)
                     .foregroundStyle(.secondary)
+                    .opacity(isVisible ? 1 : 0)
             }
         }
         .padding(.top, 20)

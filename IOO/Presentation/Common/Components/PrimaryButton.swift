@@ -14,12 +14,19 @@ struct PrimaryButton: View {
     let action: () -> Void
     var style: ButtonStyle = .primary
     var isEnabled: Bool = true
+    var accessibilityHint: String? = nil
+    var accessibilityIdentifier: String? = nil
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            if isEnabled {
+                HapticFeedback.buttonTap()
+                action()
+            }
+        } label: {
             Text(title)
                 .font(.headline)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, minHeight: AccessibilityConstants.minimumTouchTargetSize)
                 .padding()
                 .background(backgroundColor)
                 .foregroundColor(foregroundColor)
@@ -27,6 +34,11 @@ struct PrimaryButton: View {
         }
         .disabled(!isEnabled)
         .opacity(isEnabled ? 1.0 : 0.6)
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityRemoveTraits(isEnabled ? [] : .isButton)
+        .accessibilityHint(accessibilityHint ?? defaultHint)
+        .modifier(ConditionalAccessibilityIdentifier(identifier: accessibilityIdentifier))
     }
 
     private var backgroundColor: Color {
@@ -48,6 +60,30 @@ struct PrimaryButton: View {
             return .primary
         case .destructive:
             return .red
+        }
+    }
+
+    private var defaultHint: String {
+        switch style {
+        case .primary:
+            return "双击激活主要操作"
+        case .secondary:
+            return "双击激活次要操作"
+        case .destructive:
+            return "双击执行删除操作"
+        }
+    }
+}
+
+/// 条件辅助功能标识符修饰符
+private struct ConditionalAccessibilityIdentifier: ViewModifier {
+    let identifier: String?
+
+    func body(content: Content) -> some View {
+        if let identifier = identifier {
+            content.accessibilityIdentifier(identifier)
+        } else {
+            content
         }
     }
 }

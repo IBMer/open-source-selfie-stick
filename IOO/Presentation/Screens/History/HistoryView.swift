@@ -54,17 +54,24 @@ struct HistoryView: View {
                 } label: {
                     SessionRowView(session: session)
                 }
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .opacity
+                ))
             }
             .onDelete { indexSet in
-                Task {
-                    for index in indexSet {
-                        let session = viewModel.gameSessions[index]
-                        await viewModel.deleteSession(id: session.id)
+                withAnimation {
+                    Task {
+                        for index in indexSet {
+                            let session = viewModel.gameSessions[index]
+                            await viewModel.deleteSession(id: session.id)
+                        }
                     }
                 }
             }
         }
         .listStyle(.plain)
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.gameSessions)
         .refreshable {
             await viewModel.loadHistory()
         }
@@ -129,6 +136,7 @@ struct SessionRowView: View {
 // MARK: - Session Detail View
 struct SessionDetailView: View {
     let session: GameSession
+    @State private var isVisible: Bool = false
 
     var body: some View {
         ScrollView {
@@ -147,17 +155,28 @@ struct SessionDetailView: View {
                 .padding()
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(12)
+                .opacity(isVisible ? 1 : 0)
+                .offset(y: isVisible ? 0 : -20)
 
                 // 游戏信息
                 infoSection
+                    .opacity(isVisible ? 1 : 0)
+                    .offset(y: isVisible ? 0 : -20)
 
                 // 绘画对比
                 drawingsSection
+                    .opacity(isVisible ? 1 : 0)
+                    .offset(y: isVisible ? 0 : -20)
             }
             .padding()
         }
         .navigationTitle("游戏详情")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+                isVisible = true
+            }
+        }
     }
 
     @ViewBuilder

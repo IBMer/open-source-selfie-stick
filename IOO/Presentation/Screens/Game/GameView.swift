@@ -23,8 +23,10 @@ struct GameView: View {
             // 等待对方的遮罩
             if viewModel.gameState == .waitingForPartner {
                 waitingOverlay
+                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
             }
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.gameState)
         .navigationTitle("画画猜猜")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(viewModel.gameState != .waiting)
@@ -48,15 +50,22 @@ struct GameView: View {
         switch viewModel.gameState {
         case .waiting:
             waitingView
+                .transition(.opacity.combined(with: .scale(scale: 0.95)))
 
         case .drawing, .timeUp:
             drawingView
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .opacity
+                ))
 
         case .waitingForPartner:
             drawingView // 继续显示画布，但禁用
+                .transition(.opacity)
 
         case .showingResult:
             resultPlaceholder
+                .transition(.opacity.combined(with: .scale(scale: 1.1)))
         }
     }
 

@@ -70,12 +70,18 @@ final class ConnectionManager: NSObject {
 
     func sendMessage(_ message: GameMessage) async throws {
         guard !session.connectedPeers.isEmpty else {
-            throw ConnectionError.notConnected
+            throw AppError.peerDisconnected
         }
 
-        let data = try JSONEncoder().encode(message)
-        try session.send(data, toPeers: session.connectedPeers, with: .reliable)
-        print("📤 Sent message: \(message.description)")
+        do {
+            let data = try JSONEncoder().encode(message)
+            try session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            print("📤 Sent message: \(message.description)")
+        } catch let error as EncodingError {
+            throw AppError.encodingFailed
+        } catch {
+            throw AppError.messageSendFailed
+        }
     }
 
     func observeMessages() -> AsyncStream<GameMessage> {
@@ -137,8 +143,12 @@ extension ConnectionManager: MCSessionDelegate {
                 let message = try JSONDecoder().decode(GameMessage.self, from: data)
                 messageContinuation?.yield(message)
                 print("📥 Received message: \(message.description) from \(peerID.displayName)")
-            } catch {
+            } catch let error as DecodingError {
                 print("❌ Failed to decode message: \(error)")
+                // 通知上层数据损坏
+                connectionState = .error(AppError.decodingFailed.localizedDescription)
+            } catch {
+                print("❌ Unexpected error receiving message: \(error)")
             }
         }
     }
@@ -185,7 +195,8 @@ extension ConnectionManager: MCNearbyServiceAdvertiserDelegate {
         didNotStartAdvertisingPeer error: Error
     ) {
         Task { @MainActor in
-            connectionState = .error(error.localizedDescription)
+            let appError = AppError.connectionFailed(reason: error.localizedDescription)
+            connectionState = .error(appError.localizedDescription)
             print("❌ Did not start advertising: \(error)")
         }
     }
@@ -209,7 +220,8 @@ extension ConnectionManager: MCNearbyServiceBrowserDelegate {
         didNotStartBrowsingForPeers error: Error
     ) {
         Task { @MainActor in
-            connectionState = .error(error.localizedDescription)
+            let appError = AppError.connectionFailed(reason: error.localizedDescription)
+            connectionState = .error(appError.localizedDescription)
             print("❌ Did not start browsing: \(error)")
         }
     }
@@ -228,27 +240,12 @@ extension ConnectionManager: MCNearbyServiceBrowserDelegate {
         _ browser: MCNearbyServiceBrowser,
         lostPeer peerID: MCPeerID
     ) {
-        print("📡 Lost peer: \(peerID.displayName)")
-    }
-}
-
-// MARK: - Connection Error
-enum ConnectionError: Error, LocalizedError {
-    case notConnected
-    case sendFailed
-    case encodingFailed
-    case decodingFailed
-
-    var errorDescription: String? {
-        switch self {
-        case .notConnected:
-            return "未连接到任何设备"
-        case .sendFailed:
-            return "发送消息失败"
-        case .encodingFailed:
-            return "消息编码失败"
-        case .decodingFailed:
-            return "消息解码失败"
+        Task { @MainActor in
+            // 如果当前连接的对等方丢失，更新状态
+            if connectedPartnerName == peerID.displayName {
+                connectionState = .error(AppError.connectionLost.localizedDescription)
+            }
+            print("📡 Lost peer: \(peerID.displayName)")
         }
     }
 }

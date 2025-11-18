@@ -89,9 +89,23 @@ struct EmptyStateView: View {
 }
 
 /// 错误视图
+/// 支持 String 和 AppError 两种错误类型
 struct ErrorView: View {
     let error: String
+    let appError: AppError?
     var retryAction: (() -> Void)?
+
+    init(error: String, retryAction: (() -> Void)? = nil) {
+        self.error = error
+        self.appError = nil
+        self.retryAction = retryAction
+    }
+
+    init(appError: AppError, retryAction: (() -> Void)? = nil) {
+        self.error = appError.localizedDescription
+        self.appError = appError
+        self.retryAction = retryAction
+    }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -108,7 +122,18 @@ struct ErrorView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
-            if let retryAction = retryAction {
+            // 恢复建议
+            if let suggestion = appError?.recoverySuggestion {
+                Text(suggestion)
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+
+            // 重试按钮（仅对可重试的错误显示）
+            if let retryAction = retryAction,
+               appError?.isRetryable ?? true {
                 Button("重试", action: retryAction)
                     .font(.headline)
                     .padding(.horizontal, 24)
