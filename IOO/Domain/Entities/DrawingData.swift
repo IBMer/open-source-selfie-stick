@@ -1,0 +1,77 @@
+//
+//  DrawingData.swift
+//  IOO
+//
+//  Created on 2025-11-18.
+//
+
+import Foundation
+import CoreGraphics
+
+/// 绘画数据模型
+/// 包含图片数据和笔触信息
+struct DrawingData: Sendable, Codable, Equatable {
+    let imageData: Data
+    let strokes: [DrawingStroke]
+
+    init(imageData: Data, strokes: [DrawingStroke]) {
+        self.imageData = imageData
+        self.strokes = strokes
+    }
+}
+
+/// 单个笔触
+struct DrawingStroke: Sendable, Codable, Equatable {
+    let points: [CGPoint]
+    let color: String  // Hex color string
+    let width: Double
+
+    init(points: [CGPoint], color: String, width: Double) {
+        self.points = points
+        self.color = color
+        self.width = width
+    }
+}
+
+// MARK: - CGPoint Codable Extension
+extension CGPoint: @retroactive Codable {
+    enum CodingKeys: String, CodingKey {
+        case x, y
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let x = try container.decode(Double.self, forKey: .x)
+        let y = try container.decode(Double.self, forKey: .y)
+        self.init(x: x, y: y)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(x, forKey: .x)
+        try container.encode(y, forKey: .y)
+    }
+}
+
+// MARK: - Helper Methods
+extension DrawingData {
+    /// 创建空白绘画
+    static var empty: DrawingData {
+        DrawingData(imageData: Data(), strokes: [])
+    }
+
+    /// 是否为空
+    var isEmpty: Bool {
+        strokes.isEmpty
+    }
+
+    /// 笔触总数
+    var strokeCount: Int {
+        strokes.count
+    }
+
+    /// 图片大小（字节）
+    var imageSizeInBytes: Int {
+        imageData.count
+    }
+}
