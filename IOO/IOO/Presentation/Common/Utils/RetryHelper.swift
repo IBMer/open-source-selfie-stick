@@ -46,7 +46,7 @@ enum RetryHelper {
         }
 
         // 所有重试都失败，抛出最后一个错误
-        throw lastError ?? AppError.unknown(NSError(domain: "RetryHelper", code: -1))
+        throw lastError ?? AppError.unknown("所有重试尝试均失败")
     }
 
     /// 执行带超时的异步操作
