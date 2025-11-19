@@ -6,5 +6,16 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>IOO 需要访问本地网络以连接附近的设备进行游戏配对。</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_ioo-game._tcp</string>
+		<string>_ioo-game._udp</string>
+	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>IOO 使用蓝牙来发现和连接附近的设备进行游戏。</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>IOO 使用蓝牙来发现和连接附近的设备进行游戏。</string>
 </dict>
 </plist>
