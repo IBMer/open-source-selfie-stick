@@ -77,7 +77,7 @@ struct DrawingCanvasView: View {
                         currentStrokes.append(newStroke)
                     } else {
                         // 继续当前笔触
-                        if var lastStroke = currentStrokes.last {
+                        if let lastStroke = currentStrokes.last {
                             var points = lastStroke.points
                             points.append(value.location)
                             currentStrokes[currentStrokes.count - 1] = DrawingStroke(

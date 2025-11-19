@@ -75,9 +75,9 @@ final class GameViewModel {
 
     // MARK: - Private Methods
     private func observeIncomingMessages() {
-        Task {
+        Task { @MainActor in
             for await message in connectionRepository.observeMessages() {
-                await handleMessage(message)
+                handleMessage(message)
             }
         }
     }
