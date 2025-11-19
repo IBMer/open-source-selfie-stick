@@ -60,12 +60,10 @@ struct HistoryView: View {
                 ))
             }
             .onDelete { indexSet in
-                withAnimation {
-                    Task {
-                        for index in indexSet {
-                            let session = viewModel.gameSessions[index]
-                            await viewModel.deleteSession(id: session.id)
-                        }
+                Task {
+                    for index in indexSet {
+                        let session = viewModel.gameSessions[index]
+                        await viewModel.deleteSession(id: session.id)
                     }
                 }
             }
