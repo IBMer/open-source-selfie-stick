@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 /// 触觉反馈管理器
 /// 提供统一的触觉反馈接口

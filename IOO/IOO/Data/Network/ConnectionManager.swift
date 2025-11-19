@@ -24,16 +24,7 @@ final class ConnectionManager: NSObject {
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     private var messageContinuation: AsyncStream<GameMessage>.Continuation?
-
-    private lazy var session: MCSession = {
-        let session = MCSession(
-            peer: myPeerId,
-            securityIdentity: nil,
-            encryptionPreference: .required
-        )
-        session.delegate = self
-        return session
-    }()
+    private var session: MCSession
 
     // MARK: - Initialization
     override init() {
@@ -47,9 +38,15 @@ final class ConnectionManager: NSObject {
             peer: myPeerId,
             serviceType: serviceType
         )
+        self.session = MCSession(
+            peer: myPeerId,
+            securityIdentity: nil,
+            encryptionPreference: .required
+        )
 
         super.init()
 
+        session.delegate = self
         serviceAdvertiser.delegate = self
         serviceBrowser.delegate = self
     }
@@ -233,7 +230,7 @@ extension ConnectionManager: MCNearbyServiceBrowserDelegate {
     ) {
         print("🔍 Found peer: \(peerID.displayName)")
         // Auto-invite peer (can be made user-selectable later)
-        browser.invitePeer(peerID, toSession: session, withContext: nil, timeout: 10)
+        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
     }
 
     func browser(
