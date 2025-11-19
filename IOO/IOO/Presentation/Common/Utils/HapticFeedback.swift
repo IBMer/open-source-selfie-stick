@@ -141,14 +141,20 @@ struct HapticModifier: ViewModifier {
 
 extension View {
     /// 为点击操作添加触觉反馈
-    /// - Parameter style: 触觉反馈类型
+    /// - Parameter feedback: 触觉反馈闭包
     /// - Returns: 修改后的视图
-    func hapticFeedback(_ feedback: @escaping () -> Void = HapticFeedback.light) -> some View {
+    func hapticFeedback(_ feedback: @escaping () -> Void) -> some View {
         self.simultaneousGesture(
             TapGesture()
                 .onEnded { _ in
                     feedback()
                 }
         )
+    }
+
+    /// 为点击操作添加轻微触觉反馈
+    /// - Returns: 修改后的视图
+    func lightHapticFeedback() -> some View {
+        self.hapticFeedback(HapticFeedback.light)
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 /// 连接状态枚举
-enum ConnectionState: Sendable {
+enum ConnectionState: Sendable, Equatable {
     case disconnected
     case searching
     case connecting

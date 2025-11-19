@@ -74,7 +74,7 @@ final class ConnectionManager: NSObject {
             let data = try JSONEncoder().encode(message)
             try session.send(data, toPeers: session.connectedPeers, with: .reliable)
             print("📤 Sent message: \(message.description)")
-        } catch let error as EncodingError {
+        } catch is EncodingError {
             throw AppError.encodingFailed
         } catch {
             throw AppError.messageSendFailed

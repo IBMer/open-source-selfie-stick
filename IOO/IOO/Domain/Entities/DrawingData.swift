@@ -10,7 +10,7 @@ import CoreGraphics
 
 /// 绘画数据模型
 /// 包含图片数据和笔触信息
-struct DrawingData: Sendable, Codable, Equatable {
+struct DrawingData: Sendable, Codable, Equatable, Hashable {
     let imageData: Data
     let strokes: [DrawingStroke]
 
@@ -21,7 +21,7 @@ struct DrawingData: Sendable, Codable, Equatable {
 }
 
 /// 单个笔触
-struct DrawingStroke: Sendable, Codable, Equatable {
+struct DrawingStroke: Sendable, Codable, Equatable, Hashable {
     let points: [CGPoint]
     let color: String  // Hex color string
     let width: Double

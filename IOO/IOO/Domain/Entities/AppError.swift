@@ -8,7 +8,7 @@
 import Foundation
 
 /// 应用层错误定义
-enum AppError: LocalizedError, Sendable {
+enum AppError: LocalizedError, Sendable, Equatable {
     // MARK: - Connection Errors
     case connectionFailed(reason: String)
     case connectionLost

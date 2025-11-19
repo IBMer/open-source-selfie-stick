@@ -77,7 +77,7 @@ struct GameView: View {
 
             Image(systemName: "paintbrush.pointed.fill")
                 .font(.system(size: 80))
-                .foregroundStyle(.accentColor)
+                .foregroundStyle(Color.accentColor)
 
             Text("准备开始游戏")
                 .font(.title2)

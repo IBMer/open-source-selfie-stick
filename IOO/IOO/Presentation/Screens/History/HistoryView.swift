@@ -121,7 +121,7 @@ struct SessionRowView: View {
                     Text("\(score)%")
                         .font(.title3)
                         .fontWeight(.bold)
-                        .foregroundStyle(.accentColor)
+                        .foregroundStyle(Color.accentColor)
 
                     Text("默契度")
                         .font(.caption2)

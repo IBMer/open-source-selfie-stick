@@ -9,7 +9,7 @@ import Foundation
 
 /// 游戏会话领域模型
 /// 代表一次完整的画画游戏记录
-struct GameSession: Identifiable, Sendable {
+struct GameSession: Identifiable, Sendable, Hashable {
     let id: UUID
     let createdAt: Date
     let partnerName: String
