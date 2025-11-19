@@ -155,6 +155,8 @@ extension View {
     /// 为点击操作添加轻微触觉反馈
     /// - Returns: 修改后的视图
     func lightHapticFeedback() -> some View {
-        self.hapticFeedback(HapticFeedback.light)
+        self.hapticFeedback {
+            HapticFeedback.light()
+        }
     }
 }

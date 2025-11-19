@@ -37,7 +37,7 @@ enum AppError: LocalizedError, Sendable, Equatable {
     case serverError(statusCode: Int)
 
     // MARK: - General Errors
-    case unknown(Error)
+    case unknown(String)  // Store error description instead of Error
 
     var errorDescription: String? {
         switch self {
@@ -88,8 +88,8 @@ enum AppError: LocalizedError, Sendable, Equatable {
             return "服务器错误 (代码: \(code))"
 
         // General
-        case .unknown(let error):
-            return "未知错误: \(error.localizedDescription)"
+        case .unknown(let description):
+            return "未知错误: \(description)"
         }
     }
 
@@ -133,6 +133,6 @@ extension AppError {
         if let appError = error as? AppError {
             return appError
         }
-        return .unknown(error)
+        return .unknown(error.localizedDescription)
     }
 }
